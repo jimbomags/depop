@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LikesList = ({ likesArr }) => {
+const LikesList = ({ likesArr, toggleLike }) => {
   const List = () => (
     <div className="likes-list">
       {likesArr.map(title => (
-        <p>
+        <p key={title}>
           {title}
-          <i className="fas fa-times" />
+          <i
+            role="button"
+            tabIndex="0"
+            className="fas fa-times"
+            onClick={() => toggleLike(title)}
+            onKeyDown={e => (e.keyCode === 13 ? toggleLike(title) : null)}
+          />
         </p>
       ))}
     </div>
@@ -17,15 +23,16 @@ const LikesList = ({ likesArr }) => {
     <div className="likes-list-container">
       <div className="likes-count">
         <i className="far fa-thumbs-up" />
-        {likesArr.length}
+        { likesArr.length }
       </div>
-      { likesArr && <List /> }
+      { likesArr.length > 0 && <List /> }
     </div>
   );
 };
 
 LikesList.propTypes = {
   likesArr: PropTypes.arrayOf(PropTypes.string),
+  toggleLike: PropTypes.func.isRequired,
 };
 
 LikesList.defaultProps = {
